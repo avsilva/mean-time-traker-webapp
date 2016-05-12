@@ -1,0 +1,29 @@
+<section>
+  <div class="page-header">
+    <h4 data-ng-bind="vm.timetracker.project"></h4>
+    <em class="text-muted" data-ng-bind="vm.timetracker.hours"></em>
+    <em class="text-muted">horas em</em>
+    <em class="text-muted" data-ng-bind="vm.timetracker.start_date | date:'mediumDate'"></em>
+  </div>
+  <div class="pull-right"
+       data-ng-show="vm.timetracker.isCurrentUserOwner">
+    <a class="btn btn-primary"
+       data-ui-sref="timetrackers.edit({ timetrackerId: vm.timetracker._id })">
+      <i class="glyphicon glyphicon-edit"></i>
+    </a>
+    <a class="btn btn-primary" data-ng-click="vm.remove()">
+      <i class="glyphicon glyphicon-trash"></i>
+    </a>
+  </div>
+  <small>
+    <em class="text-muted">
+      Posted on
+      <span data-ng-bind="vm.timetracker.created | date:'mediumDate'"></span>
+      by
+      <span data-ng-if="vm.timetracker.user"
+            data-ng-bind="vm.timetracker.user.displayName"></span>
+      <span data-ng-if="!vm.timetracker.user">Deleted User</span>
+    </em>
+  </small>
+  <!--<p class="lead" data-ng-bind="vm.timetracker.content"></p>-->
+</section>

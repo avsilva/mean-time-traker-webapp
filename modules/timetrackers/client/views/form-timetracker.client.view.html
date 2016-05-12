@@ -1,0 +1,63 @@
+<section>
+  <div class="page-header">
+    <h1>{{vm.timetracker._id ? 'Editar Timetracker' : 'Novo Timetracker'}}</h1>
+  </div>
+  <div class="col-md-12">
+    <form name="vm.form.timetrackerForm" class="form-horizontal" ng-submit="vm.save(vm.form.timetrackerForm.$valid)" novalidate>
+      <fieldset>
+
+
+
+        <div class="form-group" show-errors>
+          <label class="control-label" for="project">Projeto</label>
+          
+          <select class="form-control" name="project" id="project" ng-model="vm.timetracker.project">
+            <option ng-repeat="option in vm.projects" ng-value="{{option.name}}">{{option.name}}</option>
+          </select>
+
+          <div ng-messages="vm.form.timetrackerForm.project.$error" role="alert">
+            <p class="help-block error-text" ng-message="required">Timetracker Project is required.</p>
+          </div>
+
+          <label class="control-label" for="start_date">Data</label>
+          <input dateFormat format-date name="start_date" type="date" ng-model="vm.timetracker.start_date" id="start_date" class="form-control" placeholder="Start Date" required>
+          <div ng-messages="vm.form.timetrackerForm.start_date.$error" role="alert">
+            <p class="help-block error-text" ng-message="required">Timetracker date is required.</p>
+          </div>
+
+          <label class="control-label" for="hours">Horas</label>
+          <input name="hours" type="number" ng-model="vm.timetracker.hours" min="0" max="24" step="0.5" id="hours" class="form-control" placeholder="Horas" required>
+          <div ng-messages="vm.form.timetrackerForm.hours.$error" role="alert">
+            <p class="help-block error-text" ng-message="required">Timetracker hours is required.</p>
+          </div>
+
+            <label class="control-label" for="content">Observações</label>
+            <textarea name="content" ng-model="vm.timetracker.content" id="content" class="form-control" cols="30"  rows="10" placeholder="Observações"></textarea>
+
+            <!--{{vm.timetracker.project}}
+            <br>
+            {{vm.projects}}-->
+
+        </div>
+
+
+
+
+
+
+
+
+
+        <!--<hr>-->
+        <!--<tt ng-model="vm.timetracker.start_date">project = {{vm.timetracker.start_date}}</tt><br/>-->
+
+        <div class="form-group">
+          <button type="submit" class="btn btn-default">{{vm.timetracker._id ? 'Update' : 'Create'}}</button>
+        </div>
+        <div ng-show="vm.error" class="text-danger">
+          <strong ng-bind="vm.error"></strong>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+</section>

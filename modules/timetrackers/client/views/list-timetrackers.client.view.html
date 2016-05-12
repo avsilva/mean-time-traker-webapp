@@ -1,0 +1,33 @@
+<section>
+  <div class="page-header">
+    <h1>Timetrackers</h1>
+  </div>
+  <!--{{vm.timetrackers}}-->
+  <div class="list-group">
+    <a data-ng-repeat="timetracker in vm.timetrackers"
+       data-ui-sref="timetrackers.view({ timetrackerId: timetracker._id })"
+       class="list-group-item">
+       <h4 class="list-group-item-heading" data-ng-bind="timetracker.project"></h4>
+       <!--<h4 class="list-group-item-heading" data-ng-bind="timetracker.start_date | date:'mediumDate'"></h4>-->
+
+       <medium class="list-group-item-text">
+         <span data-ng-bind="timetracker.hours"></span>
+         horas no dia
+         <span data-ng-bind="timetracker.start_date | date:'mediumDate'"></span>
+       </medium>
+       <br>
+
+      <small class="list-group-item-text">
+        Posted on
+        <span data-ng-bind="timetracker.created | date:'mediumDate'"></span>
+        by
+        <span data-ng-if="timetracker.user" data-ng-bind="timetracker.user.displayName"></span>
+        <span data-ng-if="!timetracker.user">Deleted User</span>
+      </small>
+
+    </a>
+  </div>
+  <div class="alert alert-warning text-center" data-ng-if="vm.timetrackers.$resolved && !vm.timetrackers.length">
+    No Timetrackers yet, why don't you <a data-ui-sref="timetrackers.create">create one</a>?
+  </div>
+</section>
