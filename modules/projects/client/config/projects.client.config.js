@@ -13,13 +13,14 @@
       title: 'Projects',
       state: 'projects',
       type: 'dropdown',
-      roles: ['*']
+      roles: ['user']
     });
 
     // Add the dropdown list item
     Menus.addSubMenuItem('topbar', 'projects', {
       title: 'List Projects',
-      state: 'projects.list'
+      state: 'projects.list',
+      roles: ['user']
     });
 
     // Add the dropdown create item

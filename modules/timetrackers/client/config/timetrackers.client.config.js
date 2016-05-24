@@ -13,13 +13,14 @@
       title: 'Timetrackers',
       state: 'timetrackers',
       type: 'dropdown',
-      roles: ['*']
+      roles: ['user']
     });
 
     // Add the dropdown list item
     Menus.addSubMenuItem('topbar', 'timetrackers', {
       title: 'List Timetrackers',
-      state: 'timetrackers.list'
+      state: 'timetrackers.list',
+      roles: ['user']
     });
 
     // Add the dropdown create item
