@@ -24,7 +24,7 @@ exports.create = function(req, res) {
       });
     } else {
       //workaround to deal with angular 1.3.20 date format nightmare
-      timetracker.start_date = "";
+      timetracker.start_date = '';
       res.jsonp(timetracker);
     }
   });
@@ -62,7 +62,7 @@ exports.update = function(req, res) {
 
       //timetracker.start_date = new Date(timetracker.start_date);
       //workaround to deal with angular 1.3.20 date format nightmare
-      timetracker.start_date = "";
+      timetracker.start_date = '';
       res.jsonp(timetracker);
     }
   });
@@ -89,15 +89,32 @@ exports.delete = function(req, res) {
  * List of Timetrackers
  */
 exports.list = function(req, res) {
-  Timetracker.find().sort('-created').populate('user', 'displayName').exec(function(err, timetrackers) {
-    if (err) {
-      return res.status(400).send({
-        message: errorHandler.getErrorMessage(err)
-      });
-    } else {
-      res.jsonp(timetrackers);
-    }
-  });
+
+  var pageNumber = req.query.pageNumber;
+  var perPage = req.query.perPage;
+
+  Timetracker.find()
+    .sort('-created')
+    .skip((pageNumber-1)*perPage)
+    .limit(parseInt(perPage))
+    .populate('user', 'displayName')
+    .exec(function(err, timetrackers) {
+      if (err) {
+        console.log(err);
+        return res.status(400).send({
+          message: errorHandler.getErrorMessage(err)
+        });
+      } else {
+
+        Timetracker.count().exec(function(err, count) {
+          res.jsonp({
+            'TotalCount': count,
+            'Array': timetrackers
+          });
+        });
+        //res.jsonp(timetrackers);
+      }
+    });
 };
 
 /**
