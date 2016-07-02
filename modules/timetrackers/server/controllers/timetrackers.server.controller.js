@@ -94,7 +94,7 @@ exports.list = function(req, res) {
   var perPage = req.query.perPage;
 
   Timetracker.find()
-    .sort('-created')
+    .sort('-start_date')
     .skip((pageNumber-1)*perPage)
     .limit(parseInt(perPage))
     .populate('user', 'displayName')
