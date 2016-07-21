@@ -9,9 +9,12 @@
     </div>
 
   <div class="list-group">
+
+    <!--<a data-ng-repeat="timetracker in vm.timetrackers | filter : { user: { _id: vm.authentication.user._id } }"-->
     <a data-ng-repeat="timetracker in vm.timetrackers"
        data-ui-sref="timetrackers.view({ timetrackerId: timetracker._id })"
        class="list-group-item">
+       {{timetracker.user._id}}
        <h4 class="list-group-item-heading" data-ng-bind="timetracker.project"></h4>
        <!--<h4 class="list-group-item-heading" data-ng-bind="timetracker.start_date | date:'mediumDate'"></h4>-->
 

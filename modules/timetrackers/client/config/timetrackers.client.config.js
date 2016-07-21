@@ -16,10 +16,10 @@
       roles: ['user']
     });
 
-    // Add the dropdown list item
+    // Add the dropdown chart item
     Menus.addSubMenuItem('topbar', 'timetrackers', {
       title: 'List Timetrackers',
-      state: 'timetrackers.list',
+      state: 'timetrackers.chart',
       roles: ['user']
     });
 

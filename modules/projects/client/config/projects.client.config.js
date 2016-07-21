@@ -13,21 +13,21 @@
       title: 'Projects',
       state: 'projects',
       type: 'dropdown',
-      roles: ['user']
+      roles: ['admin']
     });
 
     // Add the dropdown list item
     Menus.addSubMenuItem('topbar', 'projects', {
       title: 'List Projects',
       state: 'projects.list',
-      roles: ['user']
+      roles: ['admin']
     });
 
     // Add the dropdown create item
     Menus.addSubMenuItem('topbar', 'projects', {
       title: 'Create Project',
       state: 'projects.create',
-      roles: ['user']
+      roles: ['admin']
     });
   }
 })();

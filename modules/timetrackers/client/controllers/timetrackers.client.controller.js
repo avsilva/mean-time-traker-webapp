@@ -21,7 +21,9 @@
 
     /*$scope.projects = ProjectsService.query({_id: vm.timetracker.project });
     $scope.projects.$promise.then(function (result) {
+        console.log(result);
         $scope.projects = result;
+        vm.projects = result;
         vm.timetracker.project = $filter('filter')($scope.projects, {_id: vm.timetracker.project})[0];
         console.log(vm.timetracker);
     });*/
@@ -29,17 +31,12 @@
     vm.projects = ProjectsService.query();
     /*vm.projects.$promise.then(function (result) {
         vm.projects = result;
-
         if (vm.timetracker.project != undefined){
-
             //vm.timetracker.project = $filter('filter')(vm.projects, {_id: vm.timetracker.project})[0];
             vm.timetracker.projectame = $filter('filter')(vm.projects, {_id: vm.timetracker.project.name})[0];
             console.log(vm.timetracker);
         }
-
     });*/
-
-    //console.log(vm.timetracker);
 
     // Remove existing Timetracker
     function remove() {
@@ -65,12 +62,10 @@
       } else {
 
         //vm.timetracker.project = angular.fromJson(vm.timetracker.project);
-        console.log(vm.timetracker);
         vm.timetracker.$save(successCallback, errorCallback);
       }
 
       function successCallback(res) {
-        console.log('success');
         $state.go('timetrackers.view', {
           timetrackerId: res._id
         });

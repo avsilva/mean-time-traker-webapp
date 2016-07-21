@@ -1,17 +1,19 @@
 'use strict';
 
 /**
- * Module dependencies.
- */
+* Module dependencies.
+*/
 var path = require('path'),
   mongoose = require('mongoose'),
   Timetracker = mongoose.model('Timetracker'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
   _ = require('lodash');
 
+
+
 /**
- * Create a Timetracker
- */
+* Create a Timetracker
+*/
 exports.create = function(req, res) {
   var timetracker = new Timetracker(req.body);
   timetracker.user = req.user;
@@ -31,8 +33,8 @@ exports.create = function(req, res) {
 };
 
 /**
- * Show the current Timetracker
- */
+* Show the current Timetracker
+*/
 exports.read = function(req, res) {
   // convert mongoose document to JSON
   var timetracker = req.timetracker ? req.timetracker.toJSON() : {};
@@ -46,8 +48,8 @@ exports.read = function(req, res) {
 };
 
 /**
- * Update a Timetracker
- */
+* Update a Timetracker
+*/
 exports.update = function(req, res) {
 
   var timetracker = req.timetracker ;
@@ -69,8 +71,8 @@ exports.update = function(req, res) {
 };
 
 /**
- * Delete an Timetracker
- */
+* Delete an Timetracker
+*/
 exports.delete = function(req, res) {
   var timetracker = req.timetracker ;
 
@@ -86,40 +88,62 @@ exports.delete = function(req, res) {
 };
 
 /**
- * List of Timetrackers
- */
+* List of Timetrackers
+*/
 exports.list = function(req, res) {
 
   var pageNumber = req.query.pageNumber;
   var perPage = req.query.perPage;
+  var userId = req.query.userId;
 
-  Timetracker.find()
-    .sort('-start_date')
-    .skip((pageNumber-1)*perPage)
-    .limit(parseInt(perPage))
-    .populate('user', 'displayName')
-    .exec(function(err, timetrackers) {
-      if (err) {
-        console.log(err);
-        return res.status(400).send({
-          message: errorHandler.getErrorMessage(err)
-        });
-      } else {
+  Timetracker
+  .find({ 'user': { '_id': userId } })
+  .sort('-start_date')
+  .skip((pageNumber-1)*perPage)
+  .limit(parseInt(perPage))
+  .populate('user', 'displayName')
+  .exec(function(err, timetrackers) {
+    if (err) {
+      console.log(err);
+      return res.status(400).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    } else {
 
-        Timetracker.count().exec(function(err, count) {
-          res.jsonp({
-            'TotalCount': count,
-            'Array': timetrackers
-          });
+      Timetracker.count({ 'user': { '_id': userId } }).exec(function(err, count) {
+        res.jsonp({
+          'TotalCount': count,
+          'Array': timetrackers
         });
-        //res.jsonp(timetrackers);
-      }
-    });
+      });
+      //res.jsonp(timetrackers);
+    }
+  });
+};
+
+
+/**
+* Sum Timetrackers by project
+*/
+exports.sum = function(req, res) {
+
+  /*Timetracker.aggregate([
+    {$group : {_id : "$project", sumQuantity: { $sum: "$hours" } }}
+  ])*/
+
+  Timetracker.aggregate()
+  //.match({project : 'CIMLT'})
+  .group({ _id: '$project' , sumQuantity : { $sum: '$hours' } })
+  //.group({ _id: '' , sumQuantity : { $sum: "$hours" } })
+  .exec(function(err, result) {
+    res.jsonp(result);
+  }
+  );
 };
 
 /**
- * Timetracker middleware
- */
+* Timetracker middleware
+*/
 exports.timetrackerByID = function(req, res, next, id) {
 
   if (!mongoose.Types.ObjectId.isValid(id)) {

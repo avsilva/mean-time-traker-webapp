@@ -6,13 +6,11 @@
     <form name="vm.form.timetrackerForm" class="form-horizontal" ng-submit="vm.save(vm.form.timetrackerForm.$valid)" novalidate>
       <fieldset>
 
-
-
         <div class="form-group" show-errors>
           <label class="control-label" for="project">Projeto</label>
-          
+
           <select class="form-control" name="project" id="project" ng-model="vm.timetracker.project">
-            <option ng-repeat="option in vm.projects" ng-value="{{option.name}}">{{option.name}}</option>
+            <option ng-repeat="option in vm.projects | userProjects" ng-value='"{{option.name}}"'>{{option.name}}</option>
           </select>
 
           <div ng-messages="vm.form.timetrackerForm.project.$error" role="alert">

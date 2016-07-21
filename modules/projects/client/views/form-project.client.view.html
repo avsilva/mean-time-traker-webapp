@@ -12,6 +12,28 @@
             <p class="help-block error-text" ng-message="required">Project name is required.</p>
           </div>
 
+
+          <label class="control-label" for="name">Valor Contrato (€)</label>
+          <input name="contract_value" type="text" ng-model="vm.project.contract_value" id="contract_value" class="form-control" placeholder="Valor">
+
+
+          <div class="row">
+
+            <div class="col-md-4">
+              <label class="control-label" for="contributors">Colaboradores</label>
+              <div ng-dropdown-multiselect="" options="vm.project_users_data" selected-model="vm.project_users_model" extra-settings="vm.project_users_settings"></div>
+            </div>
+
+            <!--<div class="col-md-4">
+              <label class="control-label" for="users">Afetos ao projeto</label>
+              <ul class="list-group">
+                <li data-ng-repeat="user in vm.project.contributors" class="list-group-item">
+                  {{user.displayName}}
+                </li>
+              </ul>
+            </div>-->
+          </div>
+
           <label class="control-label" for="content">Observações</label>
           <textarea name="content" ng-model="vm.project.content" id="content" class="form-control" cols="30"  rows="10" placeholder="Observações"></textarea>
 

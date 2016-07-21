@@ -16,7 +16,9 @@ exports.create = function(req, res) {
   var project = new Project(req.body);
   project.user = req.user;
 
-  project.save(function(err) {
+  console.log(req.user);
+
+  /*project.save(function(err) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
@@ -24,7 +26,7 @@ exports.create = function(req, res) {
     } else {
       res.jsonp(project);
     }
-  });
+  });*/
 };
 
 /**
@@ -80,7 +82,7 @@ exports.delete = function(req, res) {
 /**
  * List of Projects
  */
-exports.list = function(req, res) { 
+exports.list = function(req, res) {
   Project.find().sort('-created').populate('user', 'displayName').exec(function(err, projects) {
     if (err) {
       return res.status(400).send({

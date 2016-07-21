@@ -28,6 +28,22 @@ var ProjectSchema = new Schema({
   user: {
     type: Schema.ObjectId,
     ref: 'User'
+  },
+  contract_value : {
+    type: Number,
+    default: ''
+  },
+  /*contributors : {
+    type: [{
+      type: Schema.ObjectId,
+      ref: 'User'
+    }]
+  },*/
+  contributors : {
+    type: [{
+      type: Schema.ObjectId,
+      ref: 'User'
+    }]
   }
 });
 

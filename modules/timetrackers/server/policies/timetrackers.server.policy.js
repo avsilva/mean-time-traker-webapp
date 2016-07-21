@@ -20,7 +20,12 @@ exports.invokeRolesPolicies = function () {
     }, {
       resources: '/api/timetrackers/:timetrackerId',
       permissions: '*'
-    }]
+    }, {
+      resources: '/api/sumtimetrackers',
+      permissions: '*'
+    }
+
+  ]
   }, {
     roles: ['user'],
     allows: [{
@@ -29,6 +34,9 @@ exports.invokeRolesPolicies = function () {
     }, {
       resources: '/api/timetrackers/:timetrackerId',
       permissions: ['get']
+    }, {
+      resources: '/api/sumtimetrackers',
+      permissions: '*'
     }]
   }, {
     roles: ['guest'],

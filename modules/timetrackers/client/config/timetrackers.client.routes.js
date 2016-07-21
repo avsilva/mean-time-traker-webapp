@@ -14,13 +14,22 @@
         url: '/timetrackers',
         template: '<ui-view/>'
       })
-      .state('timetrackers.list', {
+      /*.state('timetrackers.list', {
         url: '',
         templateUrl: 'modules/timetrackers/client/views/list-timetrackers.client.view.html',
         controller: 'TimetrackersListController',
         controllerAs: 'vm',
         data: {
           pageTitle: 'Timetrackers List'
+        }
+      })*/
+      .state('timetrackers.chart', {
+        url: '',
+        templateUrl: 'modules/timetrackers/client/views/chart-timetrackers.client.view.html',
+        controller: 'TimetrackersListController',
+        controllerAs: 'vm',
+        data: {
+          pageTitle: 'Timetrackers Chart'
         }
       })
       .state('timetrackers.create', {
