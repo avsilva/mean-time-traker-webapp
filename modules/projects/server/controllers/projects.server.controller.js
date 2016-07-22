@@ -16,9 +16,7 @@ exports.create = function(req, res) {
   var project = new Project(req.body);
   project.user = req.user;
 
-  console.log(req.user);
-
-  /*project.save(function(err) {
+  project.save(function(err) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
@@ -26,7 +24,7 @@ exports.create = function(req, res) {
     } else {
       res.jsonp(project);
     }
-  });*/
+  });
 };
 
 /**
