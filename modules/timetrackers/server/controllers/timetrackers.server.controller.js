@@ -95,8 +95,6 @@ exports.list = function(req, res) {
 
   var pageNumber = req.query.pageNumber, perPage = req.query.perPage, userId = req.query.userId, projectId = req.query.projectId, filter = {};
 
-  console.log(projectId);
-
   if (userId !== undefined){
     filter.user = { '_id': userId };
   }
@@ -140,8 +138,8 @@ exports.sum = function(req, res) {
   //var Projects = mongoose.model('Projects');
 
   Timetracker.aggregate([
-    { $group : { _id : '$projectid', sumQuantity: { $sum: '$hours' } } },
-    { $lookup: { from: 'Project', localField: '_id', foreignField: '_id', as: 'timeproject' } }
+    { $group : { _id : '$projectid', sumQuantity: { $sum: '$hours' } } }/*,
+    { $lookup: { from: 'Project', localField: '_id', foreignField: '_id', as: 'timeproject' } }*/
   ])
   .exec(function(err, result) {
     Project.populate(result, { path: '_id' }, function(err, populatedResults) {
@@ -153,7 +151,7 @@ exports.sum = function(req, res) {
   /*Timetracker.aggregate()
   //.match({project : 'CIMLT'})
   .group({ _id: '$projectid' , sumQuantity : { $sum: '$hours' } })
-  .lookup({ from: 'Projects', localField: '$projectid', foreignField: '_id', as: 'timeproject'})
+  //.lookup({ from: 'Projects', localField: '$projectid', foreignField: '_id', as: 'timeproject'})
   //.group({ _id: '' , sumQuantity : { $sum: "$hours" } })
   .exec(function(err, result) {
     res.jsonp(result);
