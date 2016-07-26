@@ -30,14 +30,15 @@ var TimetrackerSchema = new Schema({
     required: 'Please fill Timetracker hours',
     trim: true
   },
-  /*project: {
+  projectid: {
     type: Schema.ObjectId,
-    ref: 'Project'
-  },*/
-  project: {
-    type: Object,
+    ref: 'Project',
     required: 'Please fill Timetracker project',
   },
+  /*project: {
+    type: Object,
+    required: 'Please fill Timetracker project',
+  },*/
   user: {
     type: Schema.ObjectId,
     ref: 'User'

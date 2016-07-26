@@ -19,7 +19,7 @@ return data;
     var vm = this;
     vm.authentication = Authentication;
     vm.pageChanged = pageChanged;
-    vm.setColaborator = setColaborator;
+    vm.filterData = filterData;
     vm.pageSize = 20;
     vm.currentPage = 1;
     vm.totalTimeTrackers = 0;
@@ -32,6 +32,7 @@ return data;
     vm.pieDatapoints2 = [];
     vm.pieDatacolumns2 = [];
     vm.user = vm.authentication.user;
+    vm.project = {};
 
     if (vm.authentication.user.roles.indexOf('admin') !== -1){
       Admin.query(function (data) {
@@ -39,32 +40,33 @@ return data;
       });
     }
 
+    vm.projects = ProjectsService.query();
 
-    //var projects = ProjectsService.query();
+
     var appendProject = function appendProject(p) {
       // You could substitue use of filter here with underscore etc.
       //p.project = $filter('filter')(projects, {_id: p.project})[0];
     };
 
-    getPageData(vm.user._id);
+    getPageData(vm.user._id, vm.project._id);
     getSumData();
 
     function getSumData(){
       vm.aggData = TimetrackersAggService.sum({ 'perPage': vm.pageSize, 'pageNumber': vm.currentPage });
       vm.aggData.$promise.then(function (result) {
-        //console.log(result);
+
         result.forEach(function(currentValue,index,arr){
-          vm.pieDatacolumns.push({ 'id': currentValue._id, 'type': 'pie', 'name': currentValue._id });
+          vm.pieDatacolumns.push({ 'id': currentValue._id._id, 'type': 'pie', 'name': currentValue._id.name });
           var dataPoints = {};
-          dataPoints[currentValue._id] = currentValue.sumQuantity;
+          dataPoints[currentValue._id._id] = currentValue.sumQuantity;
           vm.pieDatapoints.push(dataPoints);
         });
       });
     }
 
-    function getPageData(_user){
+    function getPageData(_user, _project){
 
-      vm.timetrackers = TimetrackersService.query({ 'perPage': vm.pageSize, 'pageNumber': vm.currentPage, 'userId': _user });
+      vm.timetrackers = TimetrackersService.query({ 'perPage': vm.pageSize, 'pageNumber': vm.currentPage, 'userId': _user, 'projectId': _project });
       vm.timetrackers.$promise.then(function (result) {
         vm.timetrackers = result.Array;
         vm.totalTimeTrackers = result.TotalCount;
@@ -72,8 +74,10 @@ return data;
 
         loadData(vm.timetrackers, function (column_chart_data, pie_chart_data) {
 
+          //column chart data
           vm.datapoints = column_chart_data;
 
+          //pie chart data
           vm.pieDatapoints2 = [];
           vm.pieDatacolumns2 = [];
           angular.forEach(pie_chart_data, function(value, key) {
@@ -93,9 +97,7 @@ return data;
       var hours_by_data = {}, b = [], hours_by_project = {};
       _arr.forEach(function(currentValue,index,arr){
         //console.log(currentValue);
-        //var aDate = dateFilter(new Date(_arr.start_date),'yyyy-MM-dd hh:mm:ss');
         var aDate = dateFilter(new Date(currentValue.start_date),'yyyy-MM-dd');
-        //var aDate = new Date(currentValue.start_date);
 
         if (hours_by_data[aDate] !== undefined){
           hours_by_data[aDate] = parseInt(currentValue.hours) + parseInt(hours_by_data[aDate]);
@@ -103,10 +105,10 @@ return data;
           hours_by_data[aDate] = currentValue.hours;
         }
 
-        if (hours_by_project[currentValue.project] !== undefined){
-          hours_by_project[currentValue.project] = parseInt(currentValue.hours) + parseInt(hours_by_project[currentValue.project]);
+        if (hours_by_project[currentValue.projectid.name] !== undefined){
+          hours_by_project[currentValue.projectid.name] = parseInt(currentValue.hours) + parseInt(hours_by_project[currentValue.projectid.name]);
         } else {
-          hours_by_project[currentValue.project] = currentValue.hours;
+          hours_by_project[currentValue.projectid.name] = currentValue.hours;
         }
 
       });
@@ -118,12 +120,14 @@ return data;
       //$scope.a.push(date.toLocaleDateString());
     }
 
-    function setColaborator(){
-      getPageData(vm.user._id);
+    function filterData(){
+      getPageData(vm.user._id, vm.project._id);
     }
 
+
+
     function pageChanged(){
-      getPageData(vm.user._id);
+      getPageData(vm.user._id, vm.project._id);
       getSumData();
     }
   }

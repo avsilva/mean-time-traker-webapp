@@ -7,11 +7,14 @@
       <fieldset>
 
         <div class="form-group" show-errors>
+
           <label class="control-label" for="project">Projeto</label>
 
-          <select class="form-control" name="project" id="project" ng-model="vm.timetracker.project">
+          <!--<select class="form-control" name="project" id="project" ng-model="vm.timetracker.projectid._id">
             <option ng-repeat="option in vm.projects | userProjects" ng-value='"{{option.name}}"'>{{option.name}}</option>
-          </select>
+          </select>-->
+
+          <select class="form-control" name="project" id="project" ng-options="item as item.name for item in vm.projects | userProjects track by item._id" ng-model="vm.timetracker.projectid" ng-change="vm.setProject()"></select>
 
           <div ng-messages="vm.form.timetrackerForm.project.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Timetracker Project is required.</p>
